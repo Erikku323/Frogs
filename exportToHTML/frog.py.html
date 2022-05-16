@@ -1,0 +1,56 @@
+<html>
+<head>
+<title>frog.py</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cc7832;}
+.s1 { color: #a9b7c6;}
+.s2 { color: #6897bb;}
+.s3 { color: #808080;}
+.s4 { color: #6a8759;}
+</style>
+</head>
+<body bgcolor="#2b2b2b">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+frog.py</font>
+</center></td></tr></table>
+<pre><span class="s0">from </span><span class="s1">character </span><span class="s0">import </span><span class="s1">Character</span>
+<span class="s0">import </span><span class="s1">pygame</span>
+<span class="s0">class </span><span class="s1">Frog(Character):</span>
+
+    <span class="s0">def </span><span class="s1">__init__(self</span><span class="s0">,</span><span class="s1">x</span><span class="s0">,</span><span class="s1">y):</span>
+        <span class="s1">self.isFrogDead = </span><span class="s0">False</span>
+        <span class="s1">XLim = </span><span class="s2">800 </span><span class="s3"># Window Size</span>
+        <span class="s1">YLim = </span><span class="s2">870</span>
+        <span class="s1">characterSprites = [</span><span class="s4">&quot;Frog_U.png&quot;</span><span class="s0">, </span><span class="s4">&quot;Frog_UJump.png&quot;</span><span class="s0">, </span><span class="s4">&quot;Frog_D.png&quot;</span><span class="s0">, </span><span class="s4">&quot;Frog_DJump.png&quot;</span><span class="s0">, </span><span class="s4">&quot;Frog_R.png&quot;</span><span class="s0">,</span><span class="s4">&quot;Frog_RJump.png&quot;</span><span class="s0">, </span><span class="s4">&quot;Frog_L.png&quot;</span><span class="s0">, </span><span class="s4">&quot;Frog_LJump.png&quot;</span><span class="s0">,</span><span class="s4">&quot;Frog_Dead.png&quot;</span><span class="s1">]</span>
+        <span class="s1">self.Iskillable = </span><span class="s0">True</span>
+        <span class="s1">super(Frog</span><span class="s0">, </span><span class="s1">self).__init__(x=x</span><span class="s0">,</span><span class="s1">y=y</span><span class="s0">,</span><span class="s1">XLim=XLim</span><span class="s0">,</span><span class="s1">YLim=YLim</span><span class="s0">,</span><span class="s1">characterSprites=characterSprites</span><span class="s0">,</span><span class="s1">Xmin=</span><span class="s2">0</span><span class="s0">,</span><span class="s1">Ymin=</span><span class="s2">0</span><span class="s0">,</span><span class="s1">rectHSizeOffset=</span><span class="s2">25</span><span class="s0">,</span><span class="s1">rectWSizeOffset=</span><span class="s2">20</span><span class="s0">,</span><span class="s1">rectXPosOffset=</span><span class="s2">8</span><span class="s0">,</span><span class="s1">rectYPosOffset=</span><span class="s2">12</span><span class="s1">)</span>
+        <span class="s1">self.Speed = </span><span class="s2">2</span>
+        <span class="s1">self.rect = self.characterSpriteAnimation[</span><span class="s2">0</span><span class="s1">].get_rect()</span>
+        <span class="s1">self.isOnPlatform = </span><span class="s0">False</span>
+        <span class="s1">self.resetHold = </span><span class="s0">False</span>
+
+
+    <span class="s0">def </span><span class="s1">killfrog(self):</span>
+        <span class="s0">if </span><span class="s1">self.Iskillable != </span><span class="s0">False</span><span class="s1">:</span>
+            <span class="s1">self.isFrogDead = </span><span class="s0">True</span>
+
+            <span class="s1">self.characterSpriteAnimation[</span><span class="s2">0</span><span class="s1">] = pygame.image.load(self.characterSprites[</span><span class="s2">8</span><span class="s1">])</span>
+            <span class="s1">self.characterSpriteAnimation[</span><span class="s2">1</span><span class="s1">] = pygame.image.load(self.characterSprites[</span><span class="s2">8</span><span class="s1">])</span>
+
+
+    <span class="s0">def </span><span class="s1">resetFrog(self):</span>
+        <span class="s1">self.Xcor = self.Xorg</span>
+        <span class="s1">self.Ycor = self.Yorg</span>
+        <span class="s1">self.isFrogDead = </span><span class="s0">False</span>
+        <span class="s1">self.heading = </span><span class="s2">270</span>
+        <span class="s1">self.move_Up()</span>
+        <span class="s1">self.resetHold = </span><span class="s0">False</span>
+
+
+
+</pre>
+</body>
+</html>

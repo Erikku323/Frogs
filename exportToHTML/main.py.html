@@ -1,0 +1,372 @@
+<html>
+<head>
+<title>main.py</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cc7832;}
+.s1 { color: #a9b7c6;}
+.s2 { color: #6897bb;}
+.s3 { color: #6a8759;}
+.s4 { color: #808080;}
+</style>
+</head>
+<body bgcolor="#2b2b2b">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+main.py</font>
+</center></td></tr></table>
+<pre><span class="s0">import </span><span class="s1">pygame</span>
+<span class="s0">import </span><span class="s1">time</span>
+<span class="s0">import </span><span class="s1">math</span>
+
+<span class="s0">from </span><span class="s1">frog </span><span class="s0">import </span><span class="s1">Frog</span>
+<span class="s0">from </span><span class="s1">car </span><span class="s0">import </span><span class="s1">Car</span>
+<span class="s0">from </span><span class="s1">road </span><span class="s0">import </span><span class="s1">Road</span>
+<span class="s0">from </span><span class="s1">lillypad </span><span class="s0">import </span><span class="s1">LillyPad</span>
+<span class="s0">from </span><span class="s1">platforms </span><span class="s0">import </span><span class="s1">Platforms</span>
+<span class="s0">from </span><span class="s1">turtlePlatform </span><span class="s0">import </span><span class="s1">Turtle</span>
+<span class="s0">from </span><span class="s1">frogHome </span><span class="s0">import </span><span class="s1">FrogHome</span>
+<span class="s0">from </span><span class="s1">frogHomes </span><span class="s0">import </span><span class="s1">FrogHomes</span>
+
+<span class="s0">def </span><span class="s1">genPlatforms(offset</span><span class="s0">,</span><span class="s1">startX</span><span class="s0">,</span><span class="s1">y</span><span class="s0">,</span><span class="s1">speed</span><span class="s0">,</span><span class="s1">platform</span><span class="s0">,</span><span class="s1">platforms</span><span class="s0">,</span><span class="s1">num):</span>
+    <span class="s0">for </span><span class="s1">i </span><span class="s0">in </span><span class="s1">range(</span><span class="s2">1</span><span class="s0">, </span><span class="s1">num+</span><span class="s2">1</span><span class="s1">):</span>
+        <span class="s1">x = startX + (offset * i)</span>
+        <span class="s1">platforms.addPlatform(platform(x=x</span><span class="s0">, </span><span class="s1">y=y</span><span class="s0">, </span><span class="s1">speed=speed))</span>
+
+<span class="s0">def </span><span class="s1">genTurtlePlatform(offset</span><span class="s0">,</span><span class="s1">startX</span><span class="s0">,</span><span class="s1">y</span><span class="s0">,</span><span class="s1">speed</span><span class="s0">,</span><span class="s1">turtles</span><span class="s0">,</span><span class="s1">num</span><span class="s0">,</span><span class="s1">moveCount):</span>
+    <span class="s0">for </span><span class="s1">i </span><span class="s0">in </span><span class="s1">range(</span><span class="s2">1</span><span class="s0">, </span><span class="s1">num+</span><span class="s2">1</span><span class="s1">):</span>
+        <span class="s1">x = startX + (offset * i)</span>
+        <span class="s1">turtles.addPlatform(Turtle(x=x</span><span class="s0">, </span><span class="s1">y=y</span><span class="s0">, </span><span class="s1">speed=speed</span><span class="s0">,</span><span class="s1">moveCount=moveCount))</span>
+
+<span class="s0">def </span><span class="s1">genFrogHomes(startx</span><span class="s0">,</span><span class="s1">frogHomes</span><span class="s0">,</span><span class="s1">num</span><span class="s0">,</span><span class="s1">offset):</span>
+    <span class="s1">x = startx</span>
+    <span class="s0">for </span><span class="s1">i </span><span class="s0">in </span><span class="s1">range(</span><span class="s2">1</span><span class="s0">,</span><span class="s1">num +</span><span class="s2">1</span><span class="s1">):</span>
+        <span class="s1">frogHomes.addHome(FrogHome(x=x</span><span class="s0">,</span><span class="s1">y=</span><span class="s2">64</span><span class="s1">))</span>
+        <span class="s1">x = x + offset</span>
+
+<span class="s0">def </span><span class="s1">displayScore(score_Value</span><span class="s0">,</span><span class="s1">screen</span><span class="s0">,</span><span class="s1">highscore_Value):</span>
+    <span class="s0">if  </span><span class="s1">highscore_Value &lt; score_Value:</span>
+        <span class="s1">highscore = score_Value</span>
+    <span class="s1">x = </span><span class="s2">10</span>
+    <span class="s1">y = </span><span class="s2">10</span>
+    <span class="s1">font = pygame.font.Font(</span><span class="s3">'freesansbold.ttf'</span><span class="s0">, </span><span class="s2">32</span><span class="s1">)</span>
+    <span class="s1">score = font.render(</span><span class="s3">&quot;Score : &quot; </span><span class="s1">+ str(score_Value)</span><span class="s0">,True,</span><span class="s1">(</span><span class="s2">255</span><span class="s0">,</span><span class="s2">255</span><span class="s0">,</span><span class="s2">255</span><span class="s1">))</span>
+    <span class="s1">screen.blit(score</span><span class="s0">, </span><span class="s1">(x</span><span class="s0">, </span><span class="s1">y))</span>
+    <span class="s1">x = </span><span class="s2">300</span>
+    <span class="s1">highscore = font.render(</span><span class="s3">&quot;HighScore : &quot; </span><span class="s1">+ str(highscore_Value)</span><span class="s0">,True,</span><span class="s1">(</span><span class="s2">255</span><span class="s0">,</span><span class="s2">255</span><span class="s0">,</span><span class="s2">255</span><span class="s1">))</span>
+    <span class="s1">screen.blit(highscore</span><span class="s0">, </span><span class="s1">(x</span><span class="s0">, </span><span class="s1">y))</span>
+
+<span class="s0">def </span><span class="s1">drawLives(lives</span><span class="s0">, </span><span class="s1">screen):</span>
+    <span class="s1">life = pygame.image.load(</span><span class="s3">&quot;Frog_D.png&quot;</span><span class="s1">)</span>
+    <span class="s1">x =</span><span class="s2">620</span>
+    <span class="s1">offset = </span><span class="s2">0</span>
+    <span class="s0">for </span><span class="s1">i </span><span class="s0">in </span><span class="s1">range(</span><span class="s2">0</span><span class="s0">,</span><span class="s1">lives):</span>
+        <span class="s1">screen.blit(life</span><span class="s0">,</span><span class="s1">(x + offset</span><span class="s0">,</span><span class="s2">0</span><span class="s1">))</span>
+        <span class="s1">offset =  offset + </span><span class="s2">50</span>
+
+<span class="s1">score_Value = </span><span class="s2">0</span>
+<span class="s1">highScore_Value = </span><span class="s2">0</span>
+<span class="s1">lives = </span><span class="s2">3</span>
+<span class="s1">gameOver = </span><span class="s0">False</span>
+
+
+<span class="s1">windowX = </span><span class="s2">800</span>
+<span class="s1">windowY = </span><span class="s2">865</span>
+<span class="s1">r = </span><span class="s2">255</span>
+<span class="s1">g = </span><span class="s2">255</span>
+<span class="s1">b = </span><span class="s2">255</span>
+
+
+<span class="s1">background = pygame.image.load(</span><span class="s3">'Road.png'</span><span class="s1">)</span>
+
+<span class="s4"># Needs to do this first</span>
+<span class="s1">pygame.init()</span>
+
+<span class="s1">icon = </span><span class="s3">&quot;Frog_U.png&quot;</span>
+<span class="s4">#Setup the Screen</span>
+<span class="s1">screen = pygame.display.set_mode((windowX</span><span class="s0">,</span><span class="s1">windowY))</span>
+<span class="s1">pygame.display.set_caption(</span><span class="s3">&quot;Frogs&quot;</span><span class="s1">)</span>
+<span class="s1">frogIcon = pygame.image.load(icon)</span>
+<span class="s1">pygame.display.set_icon(frogIcon)</span>
+
+
+
+
+
+<span class="s4">####</span>
+<span class="s4">#630</span>
+<span class="s1">player = Frog(x=(windowX / </span><span class="s2">2 </span><span class="s1">- </span><span class="s2">50</span><span class="s1">) </span><span class="s0">,</span><span class="s1">y=windowY - </span><span class="s2">50</span><span class="s1">)</span>
+<span class="s1">road = Road()</span>
+<span class="s1">leftcarPos =[</span><span class="s2">185</span><span class="s0">,</span><span class="s2">255</span><span class="s1">]</span>
+
+<span class="s1">road.addCar(Car(LeftOrRight=</span><span class="s2">0</span><span class="s0">,</span><span class="s1">y=</span><span class="s2">750</span><span class="s1">))</span>
+<span class="s1">road.addCar(Car(LeftOrRight=</span><span class="s2">0</span><span class="s0">,</span><span class="s1">y=</span><span class="s2">680</span><span class="s1">))</span>
+
+<span class="s1">road.addCar(Car(LeftOrRight=</span><span class="s2">1</span><span class="s0">,</span><span class="s1">y=</span><span class="s2">500</span><span class="s1">))</span>
+<span class="s1">road.addCar(Car(LeftOrRight=</span><span class="s2">1</span><span class="s0">,</span><span class="s1">y=</span><span class="s2">565</span><span class="s1">))</span>
+
+<span class="s1">platforms = Platforms()</span>
+<span class="s1">turtles = Platforms()</span>
+
+
+
+
+
+<span class="s4">####################################</span>
+<span class="s4">#Add Water Platforms</span>
+<span class="s4">#####################################</span>
+<span class="s1">speed = </span><span class="s2">0.5</span>
+<span class="s1">y = </span><span class="s2">405</span>
+<span class="s1">genPlatforms(offset=</span><span class="s2">60</span><span class="s0">,</span><span class="s1">startX=</span><span class="s2">0</span><span class="s0">,</span><span class="s1">y=y</span><span class="s0">,</span><span class="s1">speed=speed</span><span class="s0">,</span><span class="s1">platform=LillyPad</span><span class="s0">,</span><span class="s1">platforms=platforms</span><span class="s0">,</span><span class="s1">num=</span><span class="s2">3</span><span class="s1">)</span>
+<span class="s1">genPlatforms(offset=</span><span class="s2">60</span><span class="s0">,</span><span class="s1">startX=</span><span class="s2">250</span><span class="s0">,</span><span class="s1">y=y</span><span class="s0">,</span><span class="s1">speed=speed</span><span class="s0">,</span><span class="s1">platform=LillyPad</span><span class="s0">,</span><span class="s1">platforms=platforms</span><span class="s0">,</span><span class="s1">num=</span><span class="s2">3</span><span class="s1">)</span>
+<span class="s1">genPlatforms(offset=</span><span class="s2">60</span><span class="s0">,</span><span class="s1">startX=</span><span class="s2">500</span><span class="s0">,</span><span class="s1">y=y</span><span class="s0">,</span><span class="s1">speed=speed</span><span class="s0">,</span><span class="s1">platform=LillyPad</span><span class="s0">,</span><span class="s1">platforms=platforms</span><span class="s0">,</span><span class="s1">num=</span><span class="s2">3</span><span class="s1">)</span>
+<span class="s1">genPlatforms(offset=</span><span class="s2">60</span><span class="s0">,</span><span class="s1">startX=</span><span class="s2">750</span><span class="s0">,</span><span class="s1">y=y</span><span class="s0">,</span><span class="s1">speed=speed</span><span class="s0">,</span><span class="s1">platform=LillyPad</span><span class="s0">,</span><span class="s1">platforms=platforms</span><span class="s0">,</span><span class="s1">num=</span><span class="s2">3</span><span class="s1">)</span>
+
+<span class="s1">speed = </span><span class="s2">0.5</span>
+<span class="s1">y= </span><span class="s2">330</span>
+<span class="s1">genTurtlePlatform(offset=</span><span class="s2">70</span><span class="s0">,</span><span class="s1">startX=</span><span class="s2">0</span><span class="s0">,</span><span class="s1">y=y</span><span class="s0">,</span><span class="s1">speed=speed</span><span class="s0">,</span><span class="s1">turtles=turtles</span><span class="s0">,</span><span class="s1">num=</span><span class="s2">3</span><span class="s0">,</span><span class="s1">moveCount = </span><span class="s2">0</span><span class="s1">)</span>
+<span class="s1">genTurtlePlatform(offset=</span><span class="s2">70</span><span class="s0">,</span><span class="s1">startX=</span><span class="s2">250</span><span class="s0">,</span><span class="s1">y=y</span><span class="s0">,</span><span class="s1">speed=speed</span><span class="s0">,</span><span class="s1">turtles=turtles</span><span class="s0">,</span><span class="s1">num=</span><span class="s2">3</span><span class="s0">,</span><span class="s1">moveCount = </span><span class="s2">30</span><span class="s1">)</span>
+<span class="s1">genTurtlePlatform(offset=</span><span class="s2">70</span><span class="s0">,</span><span class="s1">startX=</span><span class="s2">500</span><span class="s0">,</span><span class="s1">y=y</span><span class="s0">,</span><span class="s1">speed=speed</span><span class="s0">,</span><span class="s1">turtles=turtles</span><span class="s0">,</span><span class="s1">num=</span><span class="s2">3</span><span class="s0">,</span><span class="s1">moveCount = </span><span class="s2">0</span><span class="s1">)</span>
+
+<span class="s1">speed = </span><span class="s2">0.5</span>
+<span class="s1">y = </span><span class="s2">280</span>
+<span class="s1">genPlatforms(offset=</span><span class="s2">60</span><span class="s0">,</span><span class="s1">startX=</span><span class="s2">100</span><span class="s0">,</span><span class="s1">y=y</span><span class="s0">,</span><span class="s1">speed=speed</span><span class="s0">,</span><span class="s1">platform=LillyPad</span><span class="s0">,</span><span class="s1">platforms=platforms</span><span class="s0">,</span><span class="s1">num=</span><span class="s2">3</span><span class="s1">)</span>
+<span class="s1">genPlatforms(offset=</span><span class="s2">60</span><span class="s0">,</span><span class="s1">startX=</span><span class="s2">350</span><span class="s0">,</span><span class="s1">y=y</span><span class="s0">,</span><span class="s1">speed=speed</span><span class="s0">,</span><span class="s1">platform=LillyPad</span><span class="s0">,</span><span class="s1">platforms=platforms</span><span class="s0">,</span><span class="s1">num=</span><span class="s2">3</span><span class="s1">)</span>
+<span class="s1">genPlatforms(offset=</span><span class="s2">60</span><span class="s0">,</span><span class="s1">startX=</span><span class="s2">600</span><span class="s0">,</span><span class="s1">y=y</span><span class="s0">,</span><span class="s1">speed=speed</span><span class="s0">,</span><span class="s1">platform=LillyPad</span><span class="s0">,</span><span class="s1">platforms=platforms</span><span class="s0">,</span><span class="s1">num=</span><span class="s2">3</span><span class="s1">)</span>
+<span class="s1">genPlatforms(offset=</span><span class="s2">60</span><span class="s0">,</span><span class="s1">startX=</span><span class="s2">850</span><span class="s0">,</span><span class="s1">y=y</span><span class="s0">,</span><span class="s1">speed=speed</span><span class="s0">,</span><span class="s1">platform=LillyPad</span><span class="s0">,</span><span class="s1">platforms=platforms</span><span class="s0">,</span><span class="s1">num=</span><span class="s2">3</span><span class="s1">)</span>
+<span class="s1">speed = </span><span class="s2">0.5</span>
+<span class="s1">y= </span><span class="s2">205</span>
+<span class="s4">#genTurtlePlatform(offset=150,startX=0,y=y,speed=speed,turtles=turtles,num=6,moveCount = 50)</span>
+<span class="s1">turtles.addPlatform(Turtle(x=</span><span class="s2">0</span><span class="s0">, </span><span class="s1">y=y</span><span class="s0">, </span><span class="s1">speed=speed</span><span class="s0">, </span><span class="s1">moveCount=</span><span class="s2">0</span><span class="s1">))</span>
+<span class="s1">turtles.addPlatform(Turtle(x=</span><span class="s2">100</span><span class="s0">, </span><span class="s1">y=y</span><span class="s0">, </span><span class="s1">speed=speed</span><span class="s0">, </span><span class="s1">moveCount=</span><span class="s2">50</span><span class="s1">))</span>
+<span class="s1">turtles.addPlatform(Turtle(x=</span><span class="s2">200</span><span class="s0">, </span><span class="s1">y=y</span><span class="s0">, </span><span class="s1">speed=speed</span><span class="s0">, </span><span class="s1">moveCount=</span><span class="s2">0</span><span class="s1">))</span>
+<span class="s1">turtles.addPlatform(Turtle(x=</span><span class="s2">300</span><span class="s0">, </span><span class="s1">y=y</span><span class="s0">, </span><span class="s1">speed=speed</span><span class="s0">, </span><span class="s1">moveCount=</span><span class="s2">50</span><span class="s1">))</span>
+<span class="s1">turtles.addPlatform(Turtle(x=</span><span class="s2">400</span><span class="s0">, </span><span class="s1">y=y</span><span class="s0">, </span><span class="s1">speed=speed</span><span class="s0">, </span><span class="s1">moveCount=</span><span class="s2">0</span><span class="s1">))</span>
+<span class="s1">turtles.addPlatform(Turtle(x=</span><span class="s2">500</span><span class="s0">, </span><span class="s1">y=y</span><span class="s0">, </span><span class="s1">speed=speed</span><span class="s0">, </span><span class="s1">moveCount=</span><span class="s2">50</span><span class="s1">))</span>
+<span class="s1">turtles.addPlatform(Turtle(x=</span><span class="s2">600</span><span class="s0">, </span><span class="s1">y=y</span><span class="s0">, </span><span class="s1">speed=speed</span><span class="s0">, </span><span class="s1">moveCount=</span><span class="s2">0</span><span class="s1">))</span>
+<span class="s1">turtles.addPlatform(Turtle(x=</span><span class="s2">700</span><span class="s0">, </span><span class="s1">y=y</span><span class="s0">, </span><span class="s1">speed=speed</span><span class="s0">, </span><span class="s1">moveCount=</span><span class="s2">50</span><span class="s1">))</span>
+<span class="s1">turtles.addPlatform(Turtle(x=</span><span class="s2">800</span><span class="s0">, </span><span class="s1">y=y</span><span class="s0">, </span><span class="s1">speed=speed</span><span class="s0">, </span><span class="s1">moveCount=</span><span class="s2">0</span><span class="s1">))</span>
+
+
+<span class="s1">speed = </span><span class="s2">0.5</span>
+<span class="s1">y = </span><span class="s2">150</span>
+<span class="s1">genPlatforms(offset=</span><span class="s2">60</span><span class="s0">,</span><span class="s1">startX=</span><span class="s2">100</span><span class="s0">,</span><span class="s1">y=y</span><span class="s0">,</span><span class="s1">speed=speed</span><span class="s0">,</span><span class="s1">platform=LillyPad</span><span class="s0">,</span><span class="s1">platforms=platforms</span><span class="s0">,</span><span class="s1">num=</span><span class="s2">3</span><span class="s1">)</span>
+<span class="s1">genPlatforms(offset=</span><span class="s2">60</span><span class="s0">,</span><span class="s1">startX=</span><span class="s2">350</span><span class="s0">,</span><span class="s1">y=y</span><span class="s0">,</span><span class="s1">speed=speed</span><span class="s0">,</span><span class="s1">platform=LillyPad</span><span class="s0">,</span><span class="s1">platforms=platforms</span><span class="s0">,</span><span class="s1">num=</span><span class="s2">3</span><span class="s1">)</span>
+<span class="s1">genPlatforms(offset=</span><span class="s2">60</span><span class="s0">,</span><span class="s1">startX=</span><span class="s2">600</span><span class="s0">,</span><span class="s1">y=y</span><span class="s0">,</span><span class="s1">speed=speed</span><span class="s0">,</span><span class="s1">platform=LillyPad</span><span class="s0">,</span><span class="s1">platforms=platforms</span><span class="s0">,</span><span class="s1">num=</span><span class="s2">3</span><span class="s1">)</span>
+<span class="s1">genPlatforms(offset=</span><span class="s2">60</span><span class="s0">,</span><span class="s1">startX=</span><span class="s2">850</span><span class="s0">,</span><span class="s1">y=y</span><span class="s0">,</span><span class="s1">speed=speed</span><span class="s0">,</span><span class="s1">platform=LillyPad</span><span class="s0">,</span><span class="s1">platforms=platforms</span><span class="s0">,</span><span class="s1">num=</span><span class="s2">3</span><span class="s1">)</span>
+
+<span class="s4">##################</span>
+<span class="s4">#Add Frog Homes</span>
+<span class="s4">##################</span>
+<span class="s1">frogHomes = FrogHomes()</span>
+<span class="s1">genFrogHomes(offset=</span><span class="s2">200</span><span class="s0">,</span><span class="s1">startx=</span><span class="s2">70</span><span class="s0">,</span><span class="s1">frogHomes=frogHomes</span><span class="s0">,</span><span class="s1">num=</span><span class="s2">4</span><span class="s1">)</span>
+
+
+
+
+<span class="s1">resetCount = </span><span class="s2">0 </span><span class="s4">#Count for frog animations</span>
+
+
+
+<span class="s4">#####################################################</span>
+
+<span class="s0">def </span><span class="s1">getDist(obj1</span><span class="s0">,</span><span class="s1">obj2</span><span class="s0">,</span><span class="s1">):</span>
+    <span class="s1">x1 = obj1.Xcor</span>
+    <span class="s1">y1 = obj1.Ycor</span>
+    <span class="s1">x2 = obj2.Xcor</span>
+    <span class="s1">y2 = obj2.Ycor</span>
+
+    <span class="s1">dist = math.sqrt(math.pow((x2 - x1)</span><span class="s0">,</span><span class="s2">2</span><span class="s1">) + math.pow((y2 - y1)</span><span class="s0">,</span><span class="s2">2</span><span class="s1">))</span>
+    <span class="s0">return </span><span class="s1">dist</span>
+
+<span class="s0">def </span><span class="s1">getDistCenter(obj1</span><span class="s0">,</span><span class="s1">obj2</span><span class="s0">,</span><span class="s1">):</span>
+    <span class="s1">x1 = obj1.Xcor</span>
+    <span class="s1">y1 = obj1.Ycor</span>
+    <span class="s1">x2 = obj2.Xmid</span>
+    <span class="s1">y2 = obj2.Ymid</span>
+
+    <span class="s1">dist = math.sqrt(math.pow((x2 - x1)</span><span class="s0">,</span><span class="s2">2</span><span class="s1">) + math.pow((y2 - y1)</span><span class="s0">,</span><span class="s2">2</span><span class="s1">))</span>
+    <span class="s0">return </span><span class="s1">dist</span>
+
+<span class="s0">def </span><span class="s1">reset():</span>
+    <span class="s1">player.resetFrog()</span>
+
+<span class="s1">i = </span><span class="s2">0</span>
+<span class="s4">#Main Game Loop</span>
+<span class="s1">gameQuit = </span><span class="s0">False</span>
+<span class="s1">img = </span><span class="s2">0</span>
+<span class="s0">while </span><span class="s1">gameQuit == </span><span class="s0">False</span><span class="s1">:</span>
+
+        <span class="s0">for </span><span class="s1">event </span><span class="s0">in </span><span class="s1">pygame.event.get():</span>
+            <span class="s0">if </span><span class="s1">event.type == pygame.QUIT:</span>
+                <span class="s1">gameQuit = </span><span class="s0">True</span>
+    <span class="s4"># Keyboard inputs</span>
+        <span class="s0">if </span><span class="s1">lives &lt; </span><span class="s2">0</span><span class="s1">:</span>
+            <span class="s1">score_Value = </span><span class="s2">0</span>
+
+            <span class="s1">frogHomes.reset()</span>
+
+        <span class="s0">if </span><span class="s1">player.isFrogDead == </span><span class="s0">False and  </span><span class="s1">event.type == pygame.KEYDOWN:</span>
+                <span class="s0">if </span><span class="s1">event.key == pygame.K_UP:</span>
+                    <span class="s1">player.move_Up()</span>
+                <span class="s0">elif </span><span class="s1">event.key == pygame.K_DOWN:</span>
+                    <span class="s1">player.move_Down()</span>
+                <span class="s0">elif </span><span class="s1">event.key == pygame.K_LEFT:</span>
+                    <span class="s1">player.move_Left()</span>
+                <span class="s0">elif </span><span class="s1">event.key == pygame.K_RIGHT:</span>
+                    <span class="s1">player.move_Right()</span>
+        <span class="s0">elif </span><span class="s1">player.isFrogDead == </span><span class="s0">True and </span><span class="s1">resetCount &lt; </span><span class="s2">200</span><span class="s1">:</span>
+                <span class="s1">resetCount = resetCount + </span><span class="s2">1</span>
+        <span class="s0">elif </span><span class="s1">resetCount &gt;= </span><span class="s2">200</span><span class="s1">:</span>
+            <span class="s1">resetCount = </span><span class="s2">0</span>
+            <span class="s1">reset()</span>
+        <span class="s0">else</span><span class="s1">:</span>
+            <span class="s1">player.stopped()</span>
+
+
+        <span class="s1">road.moveCars()</span>
+        <span class="s4">#</span>
+        <span class="s1">platforms.movePlatforms()</span>
+
+        <span class="s1">turtles.movePlatforms()</span>
+
+        <span class="s1">screen.fill((r</span><span class="s0">, </span><span class="s1">g</span><span class="s0">, </span><span class="s1">b))</span>
+        <span class="s1">screen.blit(background</span><span class="s0">,</span><span class="s1">(</span><span class="s2">0</span><span class="s0">,</span><span class="s2">0</span><span class="s1">))</span>
+        <span class="s1">displayScore(score_Value=score_Value</span><span class="s0">,</span><span class="s1">screen=screen</span><span class="s0">,</span><span class="s1">highscore_Value=highScore_Value)</span>
+        <span class="s1">drawLives(lives</span><span class="s0">,</span><span class="s1">screen)</span>
+
+        <span class="s0">for </span><span class="s1">platform </span><span class="s0">in </span><span class="s1">platforms.platformList:</span>
+            <span class="s1">platform.drawPlatform(screen=screen)</span>
+
+        <span class="s1">road.drawCars(screen=screen)</span>
+
+        <span class="s4">#######################################`</span>
+        <span class="s4">### Draw Turtles</span>
+        <span class="s4">###################################</span>
+        <span class="s0">for </span><span class="s1">turtle </span><span class="s0">in </span><span class="s1">turtles.platformList:</span>
+
+            <span class="s0">if </span><span class="s1">turtle.isTurtleUnderwater != </span><span class="s0">True</span><span class="s1">:</span>
+
+
+                <span class="s4">#Check turtle Status and correct the animation</span>
+                <span class="s0">if </span><span class="s1">turtle.isTurtleSurfacing == </span><span class="s0">False and </span><span class="s1">turtle.isTurtleDiving == </span><span class="s0">False</span><span class="s1">:</span>
+                    <span class="s1">turtle.setNextSprite()</span>
+                <span class="s0">elif </span><span class="s1">turtle.isTurtleSurfacing == </span><span class="s0">True</span><span class="s1">:</span>
+                    <span class="s1">turtle.setNextSurfacingSprite()</span>
+                <span class="s0">elif </span><span class="s1">turtle.isTurtleDiving == </span><span class="s0">True</span><span class="s1">:</span>
+                    <span class="s1">turtle.setNextDiveSprite()</span>
+                <span class="s1">turtle.drawPlatform(screen)</span>
+
+            <span class="s1">turtle.setHitbox()</span>
+            <span class="s1">turtle.countMove()</span>
+
+<span class="s4"># Draw Frog Homes</span>
+        <span class="s1">frogHomes.drawHomes(screen)</span>
+
+
+
+
+<span class="s4"># Draw Player</span>
+        <span class="s1">player.drawChar(screen=screen)</span>
+
+      <span class="s4">#Is Player in Water Area?</span>
+        <span class="s0">if </span><span class="s1">player.Ycor &lt; </span><span class="s2">430</span><span class="s1">:</span>
+            <span class="s1">isinWaterArea = </span><span class="s0">True</span>
+
+        <span class="s0">else</span><span class="s1">: isinWaterArea = </span><span class="s0">False</span>
+<span class="s4">###########################################</span>
+<span class="s4">##### Check for collisions</span>
+<span class="s4">###########################################</span>
+        <span class="s1">frogRect = player.get_HitBox(screen)</span>
+
+        <span class="s4">#########################################</span>
+        <span class="s4"># Does Frog hit home</span>
+        <span class="s4">#####################################</span>
+
+        <span class="s0">for </span><span class="s1">frogHome </span><span class="s0">in </span><span class="s1">frogHomes.HomeList:</span>
+            <span class="s1">frogHomeRect = frogHome.get_HitBox(screen)</span>
+            <span class="s0">if </span><span class="s1">frogRect.colliderect(frogHomeRect) </span><span class="s0">and </span><span class="s1">frogHome.isFrogHome == </span><span class="s0">False</span><span class="s1">:</span>
+                <span class="s1">frogHome.isFrogHome = </span><span class="s0">True</span>
+                <span class="s1">frogHome.drawFrogHome(screen)</span>
+                <span class="s1">score_Value = score_Value + </span><span class="s2">50</span>
+                <span class="s1">player.resetFrog()</span>
+
+        <span class="s0">if </span><span class="s1">frogHomes.areHomesFull() == </span><span class="s0">True</span><span class="s1">:</span>
+            <span class="s1">frogHomes.reset()</span>
+
+
+
+
+
+
+
+        <span class="s1">platformRect = turtle.get_HitBox(screen)</span>
+        <span class="s0">if </span><span class="s1">frogRect.colliderect(platformRect):</span>
+            <span class="s0">pass</span>
+          <span class="s4">#pygame.draw.rect(screen, (255, 255, 255), frogRect, 4)</span>
+
+        <span class="s0">for </span><span class="s1">car </span><span class="s0">in </span><span class="s1">road.carList:</span>
+            <span class="s1">carRect = car.get_HitBox(screen)</span>
+
+            <span class="s0">if </span><span class="s1">frogRect.colliderect(carRect):</span>
+               <span class="s1">player.killfrog()</span>
+
+
+        <span class="s0">for </span><span class="s1">platform </span><span class="s0">in </span><span class="s1">platforms.platformList:</span>
+            <span class="s1">platformRect = platform.get_HitBox(screen)</span>
+            <span class="s0">if </span><span class="s1">frogRect.colliderect(platformRect):</span>
+               <span class="s4"># pygame.draw.rect(screen, (255, 255, 255), frogRect, 4)</span>
+               <span class="s4"># pygame.draw.rect(screen,(0,0,255),platformRect,4)</span>
+                <span class="s1">player.isOnPlatform = </span><span class="s0">True</span>
+                <span class="s0">if </span><span class="s1">platform.LeftOrRight == </span><span class="s2">0</span><span class="s1">:</span>
+                    <span class="s1">player.Xcor -= platform.speed</span>
+                <span class="s0">else</span><span class="s1">:</span>
+                    <span class="s1">player.Xcor += platform.speed</span>
+
+
+        <span class="s0">for </span><span class="s1">turtle </span><span class="s0">in </span><span class="s1">turtles.platformList:</span>
+
+            <span class="s1">turtleRect = turtle.get_HitBox(screen)</span>
+            <span class="s0">if </span><span class="s1">frogRect.colliderect(turtleRect) </span><span class="s0">and </span><span class="s1">turtle.isTurtleUnderwater == </span><span class="s0">False</span><span class="s1">:</span>
+               <span class="s4"># pygame.draw.rect(screen, (0, 0, 255), frogRect, 4)</span>
+              <span class="s4">#  pygame.draw.rect(screen, (0, 0, 255), turtleRect, 4)</span>
+                <span class="s1">player.isOnPlatform = </span><span class="s0">True</span>
+
+                <span class="s0">if </span><span class="s1">turtle.LeftOrRight == </span><span class="s2">0</span><span class="s1">:</span>
+                    <span class="s1">player.Xcor -= turtle.speed</span>
+                <span class="s0">else</span><span class="s1">:</span>
+                    <span class="s1">player.Xcor += turtle.speed</span>
+                    <span class="s4">#pygame.draw.rect(screen, (255, 0, 0), frogRect, 4)</span>
+        <span class="s0">if </span><span class="s1">player.isOnPlatform == </span><span class="s0">False and </span><span class="s1">isinWaterArea == </span><span class="s0">True</span><span class="s1">:</span>
+            <span class="s1">player.killfrog()</span>
+
+
+        <span class="s4">#################################</span>
+
+
+
+        <span class="s0">if </span><span class="s1">player.isFrogDead == </span><span class="s0">True and </span><span class="s1">player.resetHold == </span><span class="s0">False</span><span class="s1">:</span>
+            <span class="s1">lives = lives - </span><span class="s2">1</span>
+            <span class="s1">player.resetHold = </span><span class="s0">True</span>
+
+
+
+
+
+            
+<span class="s4">###########################################################################</span>
+        <span class="s4">#time.sleep(0.1)</span>
+        <span class="s0">if </span><span class="s1">img == </span><span class="s2">0</span><span class="s1">:</span>
+            <span class="s1">img = </span><span class="s2">1</span>
+        <span class="s0">else</span><span class="s1">:</span>
+            <span class="s1">img = </span><span class="s2">0</span>
+            <span class="s1">i = i + </span><span class="s2">1</span>
+
+
+            <span class="s1">player.isOnPlatform = </span><span class="s0">False</span>
+        <span class="s1">pygame.display.update()</span>
+
+</pre>
+</body>
+</html>

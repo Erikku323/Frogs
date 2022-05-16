@@ -1,0 +1,159 @@
+<html>
+<head>
+<title>character.py</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cc7832;}
+.s1 { color: #a9b7c6;}
+.s2 { color: #808080;}
+.s3 { color: #6897bb;}
+</style>
+</head>
+<body bgcolor="#2b2b2b">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+character.py</font>
+</center></td></tr></table>
+<pre><span class="s0">import </span><span class="s1">pygame</span>
+
+<span class="s0">class </span><span class="s1">Character():</span>
+
+    <span class="s0">def </span><span class="s1">__init__(self</span><span class="s0">,</span><span class="s1">x</span><span class="s0">,</span><span class="s1">y</span><span class="s0">,</span><span class="s1">XLim</span><span class="s0">,</span><span class="s1">YLim</span><span class="s0">,</span><span class="s1">Xmin</span><span class="s0">,</span><span class="s1">Ymin</span><span class="s0">,</span><span class="s1">characterSprites</span><span class="s0">,</span><span class="s1">rectXPosOffset</span><span class="s0">,</span><span class="s1">rectYPosOffset</span><span class="s0">,</span><span class="s1">rectWSizeOffset</span><span class="s0">,</span><span class="s1">rectHSizeOffset):</span>
+
+        <span class="s1">super(Character</span><span class="s0">, </span><span class="s1">self).__init__()</span>
+        <span class="s2"># setup Frog</span>
+        <span class="s1">self.characterSprites = characterSprites</span>
+        <span class="s2">#[charUp0,charUp1,charDown0,charDown1,charRight0,charRight1,charLeft0,charLeft1]</span>
+        <span class="s1">self.characterSprite = pygame.image.load(self.characterSprites[</span><span class="s3">0</span><span class="s1">])</span>
+        <span class="s1">self.Xcor = x</span>
+        <span class="s1">self.Ycor = y</span>
+        <span class="s1">self.Speed = </span><span class="s3">0.08</span>
+        <span class="s1">self.Xlim = XLim -</span><span class="s3">50</span>
+        <span class="s1">self.Ylim = YLim - </span><span class="s3">50</span>
+        <span class="s1">self.Ymin = Ymin</span>
+        <span class="s1">self.Xmin = Xmin</span>
+        <span class="s1">self.Yorg = y </span><span class="s2"># origin points</span>
+        <span class="s1">self.Xorg = x</span>
+        <span class="s1">self.rectXPosOffset = rectXPosOffset</span>
+        <span class="s1">self.rectYPosOffset = rectYPosOffset</span>
+        <span class="s1">self.rectHSizeOffset = rectHSizeOffset</span>
+        <span class="s1">self.rectWSizeOffset = rectWSizeOffset</span>
+
+
+
+
+        <span class="s1">self.heading = </span><span class="s3">90</span>
+        <span class="s1">self.characterSprite1 = pygame.image.load(self.characterSprites[</span><span class="s3">1</span><span class="s1">])</span>
+        <span class="s1">self.characterSpriteAnimation = [self.characterSprite</span><span class="s0">,</span><span class="s1">self.characterSprite1]</span>
+        <span class="s1">self.spriteIndex = </span><span class="s3">0</span>
+        <span class="s1">self.frameCount = </span><span class="s3">0</span>
+
+
+    <span class="s0">def </span><span class="s1">drawChar(self</span><span class="s0">,</span><span class="s1">screen):</span>
+        <span class="s1">screen.blit(self.characterSpriteAnimation[self.spriteIndex]</span><span class="s0">, </span><span class="s1">(self.Xcor</span><span class="s0">, </span><span class="s1">self.Ycor))</span>
+
+    <span class="s0">def </span><span class="s1">get_Pos(self):</span>
+        <span class="s0">return </span><span class="s1">[self.Xcor</span><span class="s0">, </span><span class="s1">self.Ycor]</span>
+
+    <span class="s0">def </span><span class="s1">set_Pos(self</span><span class="s0">, </span><span class="s1">x</span><span class="s0">, </span><span class="s1">y):</span>
+        <span class="s1">self.Xcor = x</span>
+        <span class="s1">self.Ycor = y</span>
+
+    <span class="s0">def </span><span class="s1">move_Up(self):</span>
+        <span class="s0">if </span><span class="s1">self.heading != </span><span class="s3">90</span><span class="s1">:</span>
+            <span class="s1">self.characterSprite = pygame.image.load(self.characterSprites[</span><span class="s3">0</span><span class="s1">])</span>
+            <span class="s1">self.characterSprite1 = pygame.image.load(self.characterSprites[</span><span class="s3">1</span><span class="s1">])</span>
+            <span class="s1">self.characterSpriteAnimation = [self.characterSprite</span><span class="s0">, </span><span class="s1">self.characterSprite1]</span>
+            <span class="s1">self.heading = </span><span class="s3">90</span>
+        <span class="s0">elif </span><span class="s1">(self.Ycor - self.Speed) &gt;= self.Ymin :</span>
+            <span class="s1">self.Ycor -=self.Speed</span>
+            <span class="s1">self.countFrames()</span>
+        <span class="s0">else</span><span class="s1">:</span>
+            <span class="s1">self.Ycor = self.Ymin - </span><span class="s3">0.1</span>
+            <span class="s1">self.stopped()</span>
+
+    <span class="s0">def </span><span class="s1">move_Down(self):</span>
+        <span class="s0">if </span><span class="s1">self.heading != </span><span class="s3">270</span><span class="s1">:</span>
+            <span class="s1">self.characterSprite = pygame.image.load(self.characterSprites[</span><span class="s3">2</span><span class="s1">])</span>
+            <span class="s1">self.characterSprite1 = pygame.image.load(self.characterSprites[</span><span class="s3">3</span><span class="s1">])</span>
+            <span class="s1">self.heading = </span><span class="s3">270</span>
+            <span class="s1">self.characterSpriteAnimation =[self.characterSprite</span><span class="s0">,</span><span class="s1">self.characterSprite1]</span>
+        <span class="s0">elif </span><span class="s1">(self.Ycor + self.Speed) &gt;= self.Ylim:</span>
+            <span class="s0">pass</span>
+            <span class="s1">self.Ycor = self.Ylim - </span><span class="s3">0.1</span>
+            <span class="s1">self.stopped()</span>
+        <span class="s0">else</span><span class="s1">:</span>
+            <span class="s1">self.Ycor += self.Speed</span>
+            <span class="s1">self.countFrames()</span>
+
+    <span class="s0">def </span><span class="s1">move_Left(self):</span>
+        <span class="s0">if </span><span class="s1">self.heading != </span><span class="s3">180</span><span class="s1">:</span>
+            <span class="s1">self.heading = </span><span class="s3">180</span>
+            <span class="s1">self.characterSprite = pygame.image.load(self.characterSprites[</span><span class="s3">6</span><span class="s1">])</span>
+            <span class="s1">self.characterSprite1 = pygame.image.load(self.characterSprites[</span><span class="s3">7</span><span class="s1">])</span>
+            <span class="s1">self.characterSpriteAnimation = [self.characterSprite</span><span class="s0">, </span><span class="s1">self.characterSprite1]</span>
+
+
+        <span class="s0">elif </span><span class="s1">(self.Xcor - self.Speed) &gt;= self.Xmin :</span>
+            <span class="s1">self.Xcor -= self.Speed</span>
+            <span class="s1">self.countFrames()</span>
+        <span class="s0">else</span><span class="s1">:</span>
+            <span class="s1">self.Xcor = self.Xmin - </span><span class="s3">0.1</span>
+            <span class="s1">self.stopped()</span>
+
+    <span class="s0">def </span><span class="s1">move_Right(self):</span>
+        <span class="s0">if </span><span class="s1">self.heading != </span><span class="s3">0</span><span class="s1">:</span>
+
+            <span class="s1">self.heading = </span><span class="s3">0</span>
+            <span class="s1">self.characterSprite = pygame.image.load(self.characterSprites[</span><span class="s3">4</span><span class="s1">])</span>
+            <span class="s1">self.characterSprite1 = pygame.image.load(self.characterSprites[</span><span class="s3">5</span><span class="s1">])</span>
+            <span class="s1">self.characterSpriteAnimation = [self.characterSprite</span><span class="s0">, </span><span class="s1">self.characterSprite1]</span>
+
+
+        <span class="s0">elif </span><span class="s1">(self.Xcor + self.Speed) &gt;= self.Xlim:</span>
+            <span class="s1">self.Xcor = self.Xlim - </span><span class="s3">0.1</span>
+            <span class="s1">self.stopped()</span>
+
+
+        <span class="s0">else</span><span class="s1">:</span>
+            <span class="s1">self.Xcor += self.Speed</span>
+            <span class="s1">self.countFrames()</span>
+
+    <span class="s0">def </span><span class="s1">countFrames(self):</span>
+        <span class="s1">frameSlow = </span><span class="s3">15</span>
+        <span class="s0">if </span><span class="s1">self.frameCount &gt;= frameSlow:</span>
+            <span class="s0">if </span><span class="s1">self.spriteIndex &gt;= </span><span class="s3">1</span><span class="s1">:</span>
+                <span class="s1">self.frameCount = </span><span class="s3">0</span>
+                <span class="s1">self.spriteIndex = </span><span class="s3">0</span>
+            <span class="s0">else</span><span class="s1">:</span>
+                <span class="s1">self.frameCount = </span><span class="s3">0</span>
+                <span class="s1">self.spriteIndex = self.spriteIndex + </span><span class="s3">1</span>
+        <span class="s0">else</span><span class="s1">:</span>
+            <span class="s1">self.frameCount = self.frameCount + </span><span class="s3">1</span>
+
+    <span class="s0">def </span><span class="s1">stopped(self):</span>
+
+        <span class="s1">self.spriteIndex = </span><span class="s3">0</span>
+        <span class="s1">self.frameCount = </span><span class="s3">0</span>
+        <span class="s2"># if self.heading == 90:</span>
+        <span class="s2">#     self.characterSprite = pygame.image.load(self.characterSprites[0])</span>
+        <span class="s2"># elif self.heading == 0:</span>
+        <span class="s2">#     self.characterSprite = pygame.image.load(self.characterSprites[4])</span>
+        <span class="s2"># elif self.heading == 180:</span>
+        <span class="s2">#     self.characterSprite = pygame.image.load(self.characterSprites[6])</span>
+        <span class="s2"># elif self.heading == 270:</span>
+        <span class="s2">#     self.characterSprite = pygame.image.load(self.characterSprites[2])</span>
+
+    <span class="s0">def </span><span class="s1">get_HitBox(self</span><span class="s0">,</span><span class="s1">screen):</span>
+        <span class="s1">self.rect = self.characterSpriteAnimation[self.spriteIndex].get_rect()</span>
+        <span class="s1">self.rect.x = self.Xcor + self.rectXPosOffset</span>
+        <span class="s1">self.rect.y = self.Ycor + self.rectYPosOffset</span>
+        <span class="s1">self.rect.width = self.rect.width - self.rectWSizeOffset</span>
+        <span class="s1">self.rect.height = self.rect.height - self.rectHSizeOffset</span>
+       <span class="s2"># pygame.draw.rect(screen, (255, 0, 0), self.rect, 4)</span>
+        <span class="s0">return </span><span class="s1">self.rect</span>
+
+</pre>
+</body>
+</html>

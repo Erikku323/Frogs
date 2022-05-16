@@ -1,0 +1,75 @@
+<html>
+<head>
+<title>car.py</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cc7832;}
+.s1 { color: #a9b7c6;}
+.s2 { color: #6a8759;}
+.s3 { color: #6897bb;}
+.s4 { color: #808080;}
+</style>
+</head>
+<body bgcolor="#2b2b2b">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+car.py</font>
+</center></td></tr></table>
+<pre><span class="s0">from </span><span class="s1">character </span><span class="s0">import </span><span class="s1">Character</span>
+<span class="s0">import </span><span class="s1">random</span>
+
+<span class="s0">class </span><span class="s1">Car(Character):</span>
+
+    <span class="s0">def </span><span class="s1">__init__(self</span><span class="s0">,</span><span class="s1">LeftOrRight</span><span class="s0">,</span><span class="s1">y):</span>
+        <span class="s1">characterSprites = [</span><span class="s2">&quot;CarL.png&quot;</span><span class="s0">, </span><span class="s2">&quot;Frog_UJump.png&quot;</span><span class="s0">, </span><span class="s2">&quot;Frog_D.png&quot;</span><span class="s0">, </span><span class="s2">&quot;Frog_DJump.png&quot;</span><span class="s0">, </span><span class="s2">&quot;CarR.png&quot;</span><span class="s0">,</span>
+                            <span class="s2">&quot;CarR.png&quot;</span><span class="s0">, </span><span class="s2">&quot;CarL.png&quot;</span><span class="s0">, </span><span class="s2">&quot;CarL.png&quot;</span><span class="s1">]</span>
+        <span class="s1">XLim = </span><span class="s3">900</span>
+        <span class="s1">YLim = </span><span class="s3">700</span>
+        <span class="s1">Xmin = -</span><span class="s3">200</span>
+        <span class="s1">Ymin = -</span><span class="s3">100</span>
+        <span class="s1">self.LeftOrRight = LeftOrRight</span>
+
+
+        <span class="s1">super(Car</span><span class="s0">, </span><span class="s1">self).__init__(characterSprites=characterSprites</span><span class="s0">,</span><span class="s1">x=-</span><span class="s3">500</span><span class="s0">,</span><span class="s1">y=y</span><span class="s0">,</span><span class="s1">XLim=XLim</span><span class="s0">,</span><span class="s1">YLim=YLim</span><span class="s0">,</span><span class="s1">Ymin=Ymin</span><span class="s0">,</span><span class="s1">Xmin=Xmin</span><span class="s0">,</span><span class="s1">rectHSizeOffset=</span><span class="s3">25</span><span class="s0">,</span><span class="s1">rectWSizeOffset=</span><span class="s3">10</span><span class="s0">,</span><span class="s1">rectYPosOffset=</span><span class="s3">10</span><span class="s0">,</span><span class="s1">rectXPosOffset=</span><span class="s3">5</span><span class="s1">)</span>
+        <span class="s1">self.placeCar()</span>
+        <span class="s1">self.Speed = </span><span class="s3">4</span>
+
+
+    <span class="s0">def </span><span class="s1">placeCar(self):</span>
+
+        <span class="s4"># ABS XLim is -100 , 800</span>
+        <span class="s4">### code needs to be reworked</span>
+        <span class="s4">#inputs</span>
+        <span class="s4"># #isLeft</span>
+        <span class="s4"># pos</span>
+        <span class="s4"># Xcor and Speed will be Randomized</span>
+        <span class="s0">if </span><span class="s1">self.LeftOrRight == </span><span class="s3">0</span><span class="s1">:</span>
+            <span class="s1">xpos = random.uniform(self.Xlim - </span><span class="s3">50</span><span class="s0">, </span><span class="s3">800</span><span class="s1">)</span>
+            <span class="s1">self.Xcor = xpos</span>
+           <span class="s4"># self.startPos = 0</span>
+        <span class="s0">else</span><span class="s1">:</span>
+            <span class="s1">xpos = random.uniform(-</span><span class="s3">200</span><span class="s0">,</span><span class="s1">self.Xmin + </span><span class="s3">50</span><span class="s1">)</span>
+            <span class="s1">self.Xcor = xpos</span>
+
+        <span class="s1">self.Speed = random.uniform(</span><span class="s3">4</span><span class="s0">,</span><span class="s3">8</span><span class="s1">)</span>
+           <span class="s4"># self.startPos = 1</span>
+        <span class="s4">#pos = [100, 150, 200, 250, 300, 350, 400, 450, 500, 550]</span>
+        <span class="s4">#self.Ycor = random.randint(10, self.Ylim - 200)</span>
+        <span class="s4">#self.Ycor = random.choice(pos)</span>
+
+
+    <span class="s0">def </span><span class="s1">moveCar(self):</span>
+        <span class="s0">if </span><span class="s1">self.LeftOrRight == </span><span class="s3">0</span><span class="s1">:</span>
+            <span class="s1">self.move_Left()</span>
+            <span class="s0">if </span><span class="s1">self.Xcor &lt;= self.Xmin + </span><span class="s3">5</span><span class="s1">:</span>
+                <span class="s0">return True</span>
+        <span class="s0">else</span><span class="s1">:</span>
+            <span class="s1">self.move_Right()</span>
+            <span class="s0">if </span><span class="s1">self.Xcor &gt;= self.Xlim - </span><span class="s3">5</span><span class="s1">:</span>
+                <span class="s0">return True</span>
+
+        <span class="s0">return False</span>
+</pre>
+</body>
+</html>

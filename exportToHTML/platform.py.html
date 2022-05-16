@@ -1,0 +1,86 @@
+<html>
+<head>
+<title>platform.py</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cc7832;}
+.s1 { color: #a9b7c6;}
+.s2 { color: #6897bb;}
+.s3 { color: #808080;}
+</style>
+</head>
+<body bgcolor="#2b2b2b">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+platform.py</font>
+</center></td></tr></table>
+<pre><span class="s0">import </span><span class="s1">pygame</span>
+
+<span class="s0">class </span><span class="s1">Platform():</span>
+
+    <span class="s0">def </span><span class="s1">__init__(self</span><span class="s0">,</span><span class="s1">x</span><span class="s0">,</span><span class="s1">y</span><span class="s0">,</span><span class="s1">speed</span><span class="s0">,</span><span class="s1">sprite</span><span class="s0">,</span><span class="s1">rectXPosOffset</span><span class="s0">,</span><span class="s1">rectYPosOffset</span><span class="s0">,</span><span class="s1">rectWSizeOffset</span><span class="s0">,</span><span class="s1">rectHSizeOffset</span><span class="s0">,</span><span class="s1">LeftOrRight):</span>
+        <span class="s1">self.Xcor = x</span>
+        <span class="s1">self.Ycor = y</span>
+        <span class="s1">self.speed = speed</span>
+        <span class="s1">self.sprite = sprite</span>
+        <span class="s1">self.Xmin = -</span><span class="s2">150</span>
+        <span class="s1">self.XLim = </span><span class="s2">950</span>
+        <span class="s1">self.LeftOrRight = LeftOrRight</span>
+        <span class="s1">self.rectXPosOffset = rectXPosOffset</span>
+        <span class="s1">self.rectYPosOffset = rectYPosOffset</span>
+        <span class="s1">self.rectWSizeOffset =rectWSizeOffset</span>
+        <span class="s1">self.rectHSizeOffset = rectHSizeOffset</span>
+
+
+
+    <span class="s0">def </span><span class="s1">move_Right(self):</span>
+
+        <span class="s0">if </span><span class="s1">(self.Xcor + self.Speed) &gt;= self.Xlim:</span>
+            <span class="s1">self.Xcor = self.Xlim - </span><span class="s2">0.1</span>
+            <span class="s3">#reset</span>
+
+        <span class="s0">else</span><span class="s1">:</span>
+            <span class="s1">self.Xcor += self.Speed</span>
+
+    <span class="s0">def </span><span class="s1">get_Pos(self):</span>
+        <span class="s0">return </span><span class="s1">[self.Xcor</span><span class="s0">,</span><span class="s1">self.Ycor]</span>
+
+    <span class="s0">def </span><span class="s1">drawPlatform(self</span><span class="s0">, </span><span class="s1">screen):</span>
+        <span class="s1">screen.blit(self.sprite</span><span class="s0">, </span><span class="s1">(self.Xcor</span><span class="s0">, </span><span class="s1">self.Ycor))</span>
+
+    <span class="s0">def </span><span class="s1">scalePlatform(self</span><span class="s0">,</span><span class="s1">scale):</span>
+        <span class="s1">width = self.sprite.get_width()</span>
+        <span class="s1">length = self.sprite.get_height()</span>
+
+        <span class="s1">self.sprite = pygame.transform.scale(self.sprite</span><span class="s0">,</span><span class="s1">(width * scale</span><span class="s0">, </span><span class="s1">length * scale))</span>
+
+    <span class="s0">def </span><span class="s1">get_HitBox(self</span><span class="s0">,</span><span class="s1">screen):</span>
+
+        <span class="s1">self.rect = self.sprite.get_rect()</span>
+        <span class="s1">self.rect.x = self.Xcor + self.rectXPosOffset</span>
+        <span class="s1">self.rect.y = self.Ycor + self.rectYPosOffset</span>
+        <span class="s1">self.rect.width = self.rect.width - self.rectWSizeOffset</span>
+        <span class="s1">self.rect.height = self.rect.height - self.rectHSizeOffset</span>
+        <span class="s3">#pygame.draw.rect(screen, (255, 0, 0), self.rect, 4)</span>
+        <span class="s0">return </span><span class="s1">self.rect</span>
+
+    <span class="s0">def </span><span class="s1">move_Platform(self):</span>
+        <span class="s0">if </span><span class="s1">self.LeftOrRight == </span><span class="s2">0</span><span class="s1">:</span>
+            <span class="s0">if </span><span class="s1">(self.Xcor - self.speed) &gt;= self.Xmin:</span>
+                <span class="s1">self.Xcor -= self.speed</span>
+
+            <span class="s0">else</span><span class="s1">:</span>
+                <span class="s1">self.Xcor = self.XLim - </span><span class="s2">100</span>
+
+        <span class="s0">else</span><span class="s1">:</span>
+            <span class="s0">if </span><span class="s1">(self.Xcor + self.speed) &gt;= self.XLim:</span>
+                <span class="s1">self.Xcor = self.Xmin + </span><span class="s2">10</span>
+                <span class="s3"># reset</span>
+
+            <span class="s0">else</span><span class="s1">:</span>
+                <span class="s1">self.Xcor += self.speed</span>
+
+</pre>
+</body>
+</html>

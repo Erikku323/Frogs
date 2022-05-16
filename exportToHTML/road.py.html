@@ -1,0 +1,49 @@
+<html>
+<head>
+<title>road.py</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cc7832;}
+.s1 { color: #a9b7c6;}
+.s2 { color: #808080;}
+</style>
+</head>
+<body bgcolor="#2b2b2b">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+road.py</font>
+</center></td></tr></table>
+<pre><span class="s0">from </span><span class="s1">car </span><span class="s0">import </span><span class="s1">Car</span>
+<span class="s0">import </span><span class="s1">random</span>
+<span class="s0">class </span><span class="s1">Road():</span>
+
+    <span class="s0">def </span><span class="s1">__init__(self):</span>
+        <span class="s2">#self.carPos = [100, 150, 200, 250, 300, 350, 400, 450, 500, 550]</span>
+        <span class="s1">self.carList = []</span>
+
+
+
+    <span class="s0">def </span><span class="s1">addCar(self</span><span class="s0">,</span><span class="s1">car):</span>
+        <span class="s1">self.carList.append(car)</span>
+
+    <span class="s0">def </span><span class="s1">getCar(self</span><span class="s0">,</span><span class="s1">car):</span>
+        <span class="s0">return </span><span class="s1">self.carList[car]</span>
+
+    <span class="s0">def </span><span class="s1">moveCars(self):</span>
+        <span class="s0">for </span><span class="s1">i </span><span class="s0">in </span><span class="s1">range(len(self.carList)):</span>
+            <span class="s0">if </span><span class="s1">self.carList[i].moveCar() == </span><span class="s0">True</span><span class="s1">:</span>
+
+
+
+                 <span class="s1">self.carList[i].placeCar()</span>
+
+    <span class="s0">def </span><span class="s1">drawCars(self</span><span class="s0">,</span><span class="s1">screen):</span>
+        <span class="s0">for </span><span class="s1">i </span><span class="s0">in </span><span class="s1">range(len(self.carList)):</span>
+            <span class="s1">self.carList[i].drawChar(screen=screen)</span>
+
+
+
+</pre>
+</body>
+</html>

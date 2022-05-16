@@ -1,0 +1,162 @@
+<html>
+<head>
+<title>turtlePlatform.py</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cc7832;}
+.s1 { color: #a9b7c6;}
+.s2 { color: #6897bb;}
+.s3 { color: #6a8759;}
+.s4 { color: #808080;}
+</style>
+</head>
+<body bgcolor="#2b2b2b">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+turtlePlatform.py</font>
+</center></td></tr></table>
+<pre><span class="s0">from </span><span class="s1">platform </span><span class="s0">import </span><span class="s1">Platform</span>
+<span class="s0">import </span><span class="s1">pygame</span>
+
+<span class="s0">class </span><span class="s1">Turtle(Platform):</span>
+    <span class="s0">def </span><span class="s1">__init__(self</span><span class="s0">,</span><span class="s1">x</span><span class="s0">,</span><span class="s1">y</span><span class="s0">,</span><span class="s1">speed</span><span class="s0">,</span><span class="s1">moveCount):</span>
+        <span class="s1">super(Turtle</span><span class="s0">, </span><span class="s1">self).__init__(x=x</span><span class="s0">,</span><span class="s1">y=y</span><span class="s0">,</span><span class="s1">speed=speed</span><span class="s0">,</span><span class="s1">rectYPosOffset=</span><span class="s2">16</span><span class="s0">,</span><span class="s1">rectXPosOffset=</span><span class="s2">16</span><span class="s0">,</span><span class="s1">rectHSizeOffset=</span><span class="s2">30</span><span class="s0">,</span><span class="s1">rectWSizeOffset=</span><span class="s2">30</span><span class="s0">,</span><span class="s1">sprite= pygame.image.load(</span><span class="s3">&quot;Turtle1.png&quot;</span><span class="s1">)</span><span class="s0">,</span><span class="s1">LeftOrRight=</span><span class="s2">1</span><span class="s1">)</span>
+        <span class="s1">self.scalePlatform(</span><span class="s2">0.9</span><span class="s1">)</span>
+
+
+
+        <span class="s1">self.turtleSprites =[</span><span class="s3">&quot;Turtle1.png&quot;</span><span class="s0">,</span><span class="s3">&quot;Turtle2.png&quot;</span><span class="s0">,</span><span class="s3">&quot;Turtle3.png&quot;</span><span class="s0">,</span><span class="s3">&quot;Turtle4.png&quot;</span><span class="s0">,</span><span class="s3">&quot;Turtle5.png&quot;</span><span class="s0">,</span><span class="s3">&quot;Turtle6.png&quot;</span><span class="s0">,</span><span class="s3">&quot;Turtle7.png&quot;</span><span class="s0">,</span><span class="s3">&quot;Turtle8.png&quot;</span><span class="s1">]</span>
+
+
+        <span class="s1">self.spriteIndex = </span><span class="s2">0</span>
+        <span class="s1">self.frameCount = </span><span class="s2">0</span>
+        <span class="s1">self.moveCount = </span><span class="s2">0</span>
+        <span class="s1">self.isTurtleDiving = </span><span class="s0">False</span>
+        <span class="s1">self.isTurtleSurfacing = </span><span class="s0">True</span>
+        <span class="s1">self.isTurtleUnderwater = </span><span class="s0">False</span>
+
+        <span class="s1">self.moveCount = moveCount</span>
+        <span class="s1">self.countMove()</span>
+
+    <span class="s0">def </span><span class="s1">setHitbox(self):</span>
+        <span class="s0">if </span><span class="s1">self.spriteIndex &lt; </span><span class="s2">5</span><span class="s1">:</span>
+            <span class="s1">self.rectXPosOffset = </span><span class="s2">10</span>
+            <span class="s1">self.rectYPosOffset = </span><span class="s2">17</span>
+            <span class="s1">self.rectHSizeOffset = </span><span class="s2">30</span>
+            <span class="s1">self.rectWSizeOffset = </span><span class="s2">25</span>
+        <span class="s0">elif </span><span class="s1">self.spriteIndex == </span><span class="s2">5</span><span class="s1">:</span>
+            <span class="s1">self.rectXPosOffset = </span><span class="s2">15</span>
+            <span class="s1">self.rectYPosOffset = </span><span class="s2">25</span>
+            <span class="s1">self.rectHSizeOffset = </span><span class="s2">45</span>
+            <span class="s1">self.rectWSizeOffset = </span><span class="s2">30</span>
+        <span class="s0">elif </span><span class="s1">self.spriteIndex == </span><span class="s2">6</span><span class="s1">:</span>
+            <span class="s1">self.rectXPosOffset = </span><span class="s2">25</span>
+            <span class="s1">self.rectYPosOffset = </span><span class="s2">32</span>
+            <span class="s1">self.rectHSizeOffset = </span><span class="s2">60</span>
+            <span class="s1">self.rectWSizeOffset = </span><span class="s2">45</span>
+        <span class="s0">elif </span><span class="s1">self.spriteIndex == </span><span class="s2">7</span><span class="s1">:</span>
+            <span class="s1">self.rectXPosOffset = </span><span class="s2">32</span>
+            <span class="s1">self.rectYPosOffset = </span><span class="s2">35</span>
+            <span class="s1">self.rectHSizeOffset = </span><span class="s2">65</span>
+            <span class="s1">self.rectWSizeOffset = </span><span class="s2">58</span>
+
+
+
+    <span class="s0">def </span><span class="s1">setNextSurfacingSprite(self):</span>
+        <span class="s1">startIndex = </span><span class="s2">7</span>
+        <span class="s1">stopIndex = </span><span class="s2">5</span>
+        <span class="s1">delay = </span><span class="s2">40</span>
+
+        <span class="s0">if </span><span class="s1">self.frameCount &gt; delay:</span>
+            <span class="s1">self.frameCount = </span><span class="s2">0</span>
+            <span class="s0">if </span><span class="s1">self.spriteIndex &lt;= stopIndex:</span>
+                <span class="s1">self.spriteIndex = startIndex</span>
+            <span class="s0">else</span><span class="s1">:</span>
+                <span class="s1">self.spriteIndex = self.spriteIndex - </span><span class="s2">1</span>
+
+            <span class="s1">self.sprite = pygame.image.load(self.turtleSprites[self.spriteIndex])</span>
+        <span class="s0">else</span><span class="s1">:</span>
+            <span class="s1">self.frameCount = self.frameCount + </span><span class="s2">0.5</span>
+
+    <span class="s0">def </span><span class="s1">setNextDiveSprite(self):</span>
+
+
+        <span class="s1">startIndex = </span><span class="s2">5</span>
+        <span class="s1">stopIndex = len(self.turtleSprites) - </span><span class="s2">1</span>
+        <span class="s1">delay = </span><span class="s2">40</span>
+        <span class="s0">if </span><span class="s1">self.spriteIndex &lt; startIndex:</span>
+            <span class="s1">self.spriteIndex = startIndex</span>
+
+        <span class="s0">if </span><span class="s1">self.frameCount &gt; delay:</span>
+            <span class="s1">self.frameCount = </span><span class="s2">0</span>
+            <span class="s0">if </span><span class="s1">self.spriteIndex &gt;= stopIndex:</span>
+
+                <span class="s1">self.spriteIndex = startIndex</span>
+            <span class="s0">else</span><span class="s1">:</span>
+                <span class="s1">self.spriteIndex = self.spriteIndex + </span><span class="s2">1</span>
+
+            <span class="s1">self.sprite = pygame.image.load(self.turtleSprites[self.spriteIndex])</span>
+        <span class="s0">else</span><span class="s1">:</span>
+            <span class="s1">self.frameCount = self.frameCount + </span><span class="s2">0.5</span>
+
+    <span class="s0">def </span><span class="s1">setNextSprite(self):</span>
+
+        <span class="s4"># Sets animation cycles speed and which animation Diving or swimming</span>
+        <span class="s1">startIndex = </span><span class="s2">0</span>
+        <span class="s1">stopIndex = </span><span class="s2">4</span>
+        <span class="s1">delay = </span><span class="s2">5</span>
+
+        <span class="s0">if </span><span class="s1">self.spriteIndex &lt; startIndex :</span>
+            <span class="s1">self.spriteIndex = startIndex</span>
+
+        <span class="s0">if </span><span class="s1">self.frameCount &gt; delay:</span>
+            <span class="s1">self.frameCount = </span><span class="s2">0</span>
+            <span class="s0">if </span><span class="s1">self.spriteIndex &gt;= stopIndex:</span>
+
+                    <span class="s1">self.spriteIndex = startIndex</span>
+            <span class="s0">else</span><span class="s1">:</span>
+                <span class="s1">self.spriteIndex = self.spriteIndex +</span><span class="s2">1</span>
+
+            <span class="s1">self.sprite = pygame.image.load(self.turtleSprites[self.spriteIndex])</span>
+        <span class="s0">else</span><span class="s1">:</span>
+            <span class="s1">self.frameCount = self.frameCount + </span><span class="s2">0.5</span>
+
+
+        <span class="s4">#################################################</span>
+
+
+    <span class="s0">def </span><span class="s1">countMove(self):</span>
+
+
+
+
+
+        <span class="s0">if </span><span class="s1">self.moveCount &lt; </span><span class="s2">30</span><span class="s1">:</span>
+            <span class="s4"># Turtle swimming normal</span>
+            <span class="s1">self.isTurtleDiving = </span><span class="s0">False</span>
+            <span class="s1">self.isTurtleSurfacing = </span><span class="s0">False</span>
+            <span class="s1">self.isTurtleUnderwater = </span><span class="s0">False</span>
+        <span class="s0">elif </span><span class="s1">self.moveCount &gt; </span><span class="s2">30 </span><span class="s0">and </span><span class="s1">self.moveCount &lt; </span><span class="s2">50</span><span class="s1">:</span>
+            <span class="s4">#Diving</span>
+            <span class="s1">self.isTurtleDiving = </span><span class="s0">True</span>
+        <span class="s0">elif </span><span class="s1">self.moveCount &gt; </span><span class="s2">50 </span><span class="s0">and </span><span class="s1">self.moveCount &lt; </span><span class="s2">90</span><span class="s1">:</span>
+            <span class="s4">#Underwater</span>
+            <span class="s1">self.isTurtleUnderwater = </span><span class="s0">True</span>
+            <span class="s1">self.isTurtleDiving = </span><span class="s0">False</span>
+        <span class="s0">elif </span><span class="s1">self.moveCount &gt; </span><span class="s2">90  </span><span class="s0">and </span><span class="s1">self.moveCount &lt; </span><span class="s2">110</span><span class="s1">:</span>
+            <span class="s4">#Turtle Surfacing</span>
+            <span class="s1">self.isTurtleSurfacing = </span><span class="s0">True</span>
+            <span class="s1">self.isTurtleUnderwater = </span><span class="s0">False</span>
+        <span class="s0">elif </span><span class="s1">self.moveCount &gt; </span><span class="s2">110 </span><span class="s0">and </span><span class="s1">self.moveCount &lt; </span><span class="s2">150</span><span class="s1">:</span>
+            <span class="s4">#normal</span>
+            <span class="s1">self.isTurtleSurfacing = </span><span class="s0">False</span>
+            <span class="s1">self.isTurtleDiving = </span><span class="s0">False</span>
+            <span class="s1">self.isTurtleUnderwater = </span><span class="s0">False</span>
+
+            <span class="s1">self.moveCount = </span><span class="s2">0</span>
+        <span class="s1">self.moveCount =  self.moveCount + </span><span class="s2">0.1</span>
+
+</pre>
+</body>
+</html>
